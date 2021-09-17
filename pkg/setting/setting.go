@@ -1,9 +1,11 @@
 package setting
-import (
-	"log"
-"time"
 
-"github.com/go-ini/ini"
+import (
+	"fmt"
+	"github.com/go-ini/ini"
+	"github.com/jinzhu/gorm"
+	"log"
+	"time"
 )
 
 type App struct {
@@ -39,11 +41,11 @@ type Server struct {
 var ServerSetting = &Server{}
 
 type Database struct {
-	Type        string
-	User        string
-	Password    string
-	Host        string
-	Name        string
+	Type     string
+	User     string
+	Password string
+	Host     string
+	Name     string
 	//TablePrefix string
 }
 
@@ -62,7 +64,7 @@ var RedisSetting = &Redis{}
 var cfg *ini.File
 
 // Setup initialize the configuration instance  func init()
-func Setup() {
+func init() {
 	var err error
 	cfg, err = ini.Load("conf/app.ini")
 	if err != nil {
@@ -78,6 +80,27 @@ func Setup() {
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
 	//RedisSetting.IdleTimeout = RedisSetting.IdleTimeout * time.Second
+
+	Db, err = gorm.Open(DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		DatabaseSetting.User,
+		DatabaseSetting.Password,
+		DatabaseSetting.Host,
+		DatabaseSetting.Name))
+
+	if err != nil {
+		log.Fatalf("models.Setup err: %v", err)
+	}
+	//对表明进行规范生产:如果所有的表都是 ts_  开头,可以使用
+	//gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+	//	return setting.DatabaseSetting.TablePrefix + defaultTableName
+	//}
+
+	Db.SingularTable(true)
+	Db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	Db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	Db.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	Db.DB().SetMaxIdleConns(10)
+	Db.DB().SetMaxOpenConns(100)
 }
 
 // mapTo map section

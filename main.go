@@ -1,8 +1,6 @@
 package main
 
 import (
-	"Teach/models"
-	"Teach/pkg/logsetting"
 	"Teach/pkg/setting"
 	"Teach/routers"
 	"fmt"
@@ -13,11 +11,9 @@ import (
 )
 
 func init() {
-	setting.Setup()
-	models.Setup()
-	logsetting.Setup()
 	//gredis.Setup()
 }
+
 // @title Golang Gin API
 // @version 1.0
 // @description An example of gin

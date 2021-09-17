@@ -1,4 +1,5 @@
 package logsetting
+
 import (
 	"Teach/pkg/file"
 	"Teach/pkg/setting"
@@ -30,6 +31,7 @@ const (
 	ERROR
 	FATAL
 )
+
 // getLogFilePath get the log file save path
 func getLogFilePath() string {
 	return fmt.Sprintf("%s%s", setting.AppSetting.RuntimeRootPath, setting.AppSetting.LogSavePath)
@@ -43,8 +45,9 @@ func getLogFileName() string {
 		setting.AppSetting.LogFileExt,
 	)
 }
+
 // Setup initialize the log instance
-func Setup() {
+func init() {
 	var err error
 	filePath := getLogFilePath()
 	fileName := getLogFileName()

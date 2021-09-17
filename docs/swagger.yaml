@@ -1,0 +1,44 @@
+definitions:
+  services.EditTag:
+    properties:
+      id:
+        type: integer
+      modified_by:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: An example of gin
+  license:
+    name: MIT
+    url: https://github.com/EDDYCJY/go-gin-example/blob/master/LICENSE
+  termsOfService: https://github.com/EDDYCJY/go-gin-example
+  title: Golang Gin API
+  version: "1.0"
+paths:
+  /api/v1/edit_tags:
+    post:
+      parameters:
+      - description: Tag
+        in: body
+        name: tag
+        required: true
+        schema:
+          $ref: '#/definitions/services.EditTag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+        "500":
+          description: '{"code":500,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: Edit tag
+swagger: "2.0"
