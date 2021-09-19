@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "Teach/pkg/datebasesetting"
 	"Teach/pkg/setting"
 	"Teach/routers"
 	"fmt"

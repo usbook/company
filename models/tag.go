@@ -1,11 +1,12 @@
 package models
 
 import (
-	. "Teach/pkg/setting"
+	. "Teach/pkg/datebasesetting"
 	"github.com/jinzhu/gorm"
 )
 
-type Tag struct {
+type BlogTag struct {
+	Model
 	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	CreatedBy  string `json:"created_by"`
@@ -15,7 +16,7 @@ type Tag struct {
 
 // ExistTagByName checks if there is a tag with the same name
 func ExistTagByName(name string) (bool, error) {
-	var tag Tag
+	var tag BlogTag
 	err := Db.Select("id").Where("name = ? AND deleted_on = ? ", name, 0).First(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
@@ -30,7 +31,7 @@ func ExistTagByName(name string) (bool, error) {
 
 // AddTag Add a Tag
 func AddTag(name string, state int, createdBy string) error {
-	tag := Tag{
+	tag := BlogTag{
 		Name:      name,
 		State:     state,
 		CreatedBy: createdBy,
@@ -43,9 +44,9 @@ func AddTag(name string, state int, createdBy string) error {
 }
 
 // GetTags gets a list of tags based on paging and constraints
-func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error) {
+func GetTags(pageNum int, pageSize int, maps interface{}) ([]BlogTag, error) {
 	var (
-		tags []Tag
+		tags []BlogTag
 		err  error
 	)
 
@@ -65,7 +66,7 @@ func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error) {
 // GetTagTotal counts the total number of tags based on the constraint
 func GetTagTotal(maps interface{}) (int, error) {
 	var count int
-	if err := Db.Model(&Tag{}).Where(maps).Count(&count).Error; err != nil {
+	if err := Db.Model(&BlogTag{}).Where(maps).Count(&count).Error; err != nil {
 		return 0, err
 	}
 
@@ -74,7 +75,7 @@ func GetTagTotal(maps interface{}) (int, error) {
 
 // ExistTagByID determines whether a Tag exists based on the ID
 func ExistTagByID(id int) (bool, error) {
-	var tag Tag
+	var tag BlogTag
 	err := Db.Select("id").Where("id = ? AND deleted_on = ? ", id, 0).First(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
@@ -88,7 +89,7 @@ func ExistTagByID(id int) (bool, error) {
 
 // DeleteTag delete a tag
 func DeleteTag(id int) error {
-	if err := Db.Where("id = ?", id).Delete(&Tag{}).Error; err != nil {
+	if err := Db.Where("id = ?", id).Delete(&BlogTag{}).Error; err != nil {
 		return err
 	}
 
@@ -97,7 +98,7 @@ func DeleteTag(id int) error {
 
 // EditTag modify a single tag
 func EditTag(id int, data interface{}) error {
-	if err := Db.Model(&Tag{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error; err != nil {
+	if err := Db.Model(&BlogTag{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error; err != nil {
 		return err
 	}
 
@@ -106,7 +107,7 @@ func EditTag(id int, data interface{}) error {
 
 // CleanAllTag clear all tag
 func CleanAllTag() (bool, error) {
-	if err := Db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Tag{}).Error; err != nil {
+	if err := Db.Unscoped().Where("deleted_on != ? ", 0).Delete(&BlogTag{}).Error; err != nil {
 		return false, err
 	}
 

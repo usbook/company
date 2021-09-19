@@ -2,6 +2,7 @@ package routers
 
 import (
 	"Teach/controllers"
+	_ "Teach/docs"
 	"Teach/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
@@ -19,8 +20,8 @@ func InitRouter() *gin.Engine {
 
 	apiv1 := route.Group("/api/v1")
 	{
-		//获取标签列表
-		apiv1.GET("/edit_tags", controllers.EditTag)
+		apiv1.POST("/add_tag", controllers.AddTag)
+		apiv1.POST("/edit_tag", controllers.EditTag)
 	}
 
 	return route
