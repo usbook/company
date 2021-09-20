@@ -20,8 +20,10 @@ func InitRouter() *gin.Engine {
 
 	apiv1 := route.Group("/api/v1")
 	{
+		apiv1.GET("/get_tags", controllers.GetTags)
 		apiv1.POST("/add_tag", controllers.AddTag)
 		apiv1.POST("/edit_tag", controllers.EditTag)
+		apiv1.POST("/delete_tag", controllers.DeleteTag)
 	}
 
 	return route

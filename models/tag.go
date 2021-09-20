@@ -7,7 +7,6 @@ import (
 
 type BlogTag struct {
 	Model
-	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`

@@ -41,6 +41,8 @@ func init() {
 	Db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	Db.DB().SetMaxIdleConns(10)
 	Db.DB().SetMaxOpenConns(100)
+	//取消注释会在控制台打印编译后的sql 语句
+	//Db.LogMode(true)
 }
 
 // CloseDB closes database connection (unnecessary)
