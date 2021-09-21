@@ -4,6 +4,7 @@ import (
 	"Teach/controllers"
 	_ "Teach/docs"
 	"Teach/middlewares"
+	"Teach/pkg/logsetting"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -12,6 +13,8 @@ import (
 // InitRouter initialize routing information
 func InitRouter() *gin.Engine {
 	route := gin.New()
+	route.Use(gin.LoggerWithConfig(logsetting.InitLog()))
+
 	route.Use(gin.Logger())
 	route.Use(gin.Recovery())
 	//设置跨域

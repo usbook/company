@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "Teach/pkg/datebasesetting"
+	"Teach/pkg/logsetting"
 	"Teach/pkg/setting"
 	"Teach/routers"
 	"fmt"
@@ -22,6 +23,7 @@ func init() {
 // @license.name MIT
 // @license.url https://github.com/EDDYCJY/go-gin-example/blob/master/LICENSE
 func main() {
+	logsetting.Debug("adadaaaaaaaaaaaaaaaaaa")
 	gin.SetMode(setting.ServerSetting.RunMode)
 
 	routersInit := routers.InitRouter()

@@ -33,12 +33,12 @@ const (
 )
 
 // getLogFilePath get the log file save path
-func getLogFilePath() string {
+func GetLogFilePath() string {
 	return fmt.Sprintf("%s%s", setting.AppSetting.RuntimeRootPath, setting.AppSetting.LogSavePath)
 }
 
 // getLogFileName get the save name of the log file
-func getLogFileName() string {
+func GetLogFileName() string {
 	return fmt.Sprintf("%s%s.%s",
 		setting.AppSetting.LogSaveName,
 		time.Now().Format(setting.AppSetting.TimeFormat),
@@ -49,8 +49,8 @@ func getLogFileName() string {
 // Setup initialize the log instance
 func init() {
 	var err error
-	filePath := getLogFilePath()
-	fileName := getLogFileName()
+	filePath := GetLogFilePath()
+	fileName := GetLogFileName()
 	F, err = file.MustOpen(fileName, filePath)
 	if err != nil {
 		log.Fatalf("logging.Setup err: %v", err)

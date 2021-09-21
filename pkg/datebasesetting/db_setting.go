@@ -1,6 +1,7 @@
 package datebasesetting
 
 import (
+	"Teach/pkg/logsetting"
 	"Teach/pkg/setting"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -35,14 +36,22 @@ func init() {
 	//	return setting.DatabaseSetting.TablePrefix + defaultTableName
 	//}
 	//表名不需要加s
+
 	Db.SingularTable(true)
+
 	Db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
 	Db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
 	Db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	Db.DB().SetMaxIdleConns(10)
 	Db.DB().SetMaxOpenConns(100)
-	//取消注释会在控制台打印编译后的sql 语句
-	//Db.LogMode(true)
+	//debug 模式在控制台打印编译后的sql 语句
+	if setting.ServerSetting.RunMode == "debug" {
+		Db.LogMode(true)
+	} else {
+		//将编译后最终执行的sql打印到日志文件
+		Db.SetLogger(logsetting.Logger())
+	}
+
 }
 
 // CloseDB closes database connection (unnecessary)

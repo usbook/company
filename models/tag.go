@@ -49,8 +49,8 @@ func GetTags(pageNum int, pageSize int, maps interface{}) ([]BlogTag, error) {
 		err  error
 	)
 
-	if pageSize > 0 && pageNum > 0 {
-		err = Db.Where(maps).Find(&tags).Offset(pageNum).Limit(pageSize).Error
+	if pageSize > 0 && pageNum >= 0 {
+		err = Db.Where(maps).Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&tags).Error
 	} else {
 		err = Db.Where(maps).Find(&tags).Error
 	}

@@ -9,6 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gomodule/redigo v1.8.5
 	github.com/jinzhu/gorm v1.9.16
+	github.com/sirupsen/logrus v1.8.1
 	github.com/swaggo/gin-swagger v1.3.1
 	github.com/swaggo/swag v1.5.1
 	github.com/unknwon/com v1.0.1
